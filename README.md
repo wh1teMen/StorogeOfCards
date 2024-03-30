@@ -25,7 +25,7 @@ ___
 
  ##  Демонстрация работы
 
-<img src="[ReadmeContent/Create.gif](https://1.downloader.disk.yandex.ru/preview/2b9c4692874a2017f351f50be10d70fc8ba87116c60225ca3ca42304cfc4bc52/inf/--qWsOwQ4dqNji-DOtoK2Gahn6D8CXhkon39FZ-0oYgYLHL8oRWQFuDM-XEbgVj-EvKwRUjmRloYqBbED2xA-A%3D%3D?uid=203472713&filename=storage.gif&disposition=inline&hash=&limit=0&content_type=image%2Fgif&owner_uid=203472713&tknv=v2&size=1141x718)" Alt="Create">
+<img src="https://disk.yandex.ru/i/x15QrNqGyZLdsQ">
 
 </br>
 
