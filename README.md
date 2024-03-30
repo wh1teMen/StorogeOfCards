@@ -25,8 +25,7 @@ ___
 
  ##  Демонстрация работы
 
-<img src="https://disk.yandex.ru/i/x15QrNqGyZLdsQ">
-
+#### [Демонстрация.mp4]([https://disk.yandex.ru/d/TVqPwNMnJF8FDA](https://disk.yandex.ru/i/HYLpmcruc-SOhQ))
 </br>
 
 -----
