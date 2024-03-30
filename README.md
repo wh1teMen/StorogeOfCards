@@ -1,5 +1,5 @@
 # StorogeOfCards
-# ХРАНИЛИЩЕ КАРТОЧНЫХ КОЛОД:page_with_curl:
+# ХРАНИЛИЩЕ КАРТОЧНЫХ КОЛОД :page_with_curl:
 
 
 #### Скачать проект: [Проект.zip](https://disk.yandex.ru/d/TVqPwNMnJF8FDA)
