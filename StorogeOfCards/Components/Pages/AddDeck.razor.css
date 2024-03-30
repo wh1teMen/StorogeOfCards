@@ -1,0 +1,14 @@
+﻿.stilebtnAdd {
+    position: relative;
+    left: 15px;
+    top: 10px;
+    color: white;
+    font-family: 'Comic Sans MS';
+    font-weight: bold;
+    border: 2px solid white;
+    font-size: 23px;
+    margin-right:20px;
+}
+.stilebtnNumberCard {
+    width: 100%
+}

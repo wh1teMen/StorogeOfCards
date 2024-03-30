@@ -1,0 +1,211 @@
+﻿
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@rendermode InteractiveServer
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<div>
+    <button type="button" class="btn btn-outline-secondary btnShow"  @onclick=ShowListDecks 
+   >Список колод</button>
+</div>
+@*Вывод списка колод*@
+@if (flagListShow)
+{
+    <div class="listDeck">
+        <table class="table-success ">
+            <thead>
+                <tr class="table-success">
+
+                    <th scope="col" class="stileth" style=""><br/></th>
+                    <th> </th>
+                    <th scope="col" class="stileth"><br /></th>
+                    <th scope="col" class="stileth"></th>
+                    <th/>
+                    <th />
+                </tr>
+            </thead>
+            <h3 >Список колод:</h3>
+            <tbody>
+                @foreach (var item in ListDeck)
+                {                   
+                    <tr>
+                        <td class="stileTd">@item.Title</td>
+                        <td/>
+                        <td class="stileTd">@item.NumberOfCards шт</td>
+                        <td class="stileTd">
+                            <button  class="btn btn-light btnstile" @onclick="()=>DeleteDeck(item.Id)">                               
+                                <i class="fa-solid fa-trash-can fa-lg" style="color: #f75555;"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-light btnstile" @onclick="()=>GetStatusCards(item.Id)">
+                                <i class="fa-solid fa-desktop"></i>
+                            </button>                           
+                        </td>
+                        <th>
+                            <button class="btn btn-light btnstile" @onclick="(()=>{GetStatusCards(item.Id,1);UpdateStaus(item.Id);})">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </button>
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@* Вывод карт *@
+@if (flagShowCardsActiv)
+{
+   
+    <div class="conteinerCard">
+
+        <div class="divShowCards">
+            @foreach (var item in ListCardShow)
+            {
+                <div >
+                    <img src="@item.UrlImage" />;
+                </div>
+            }
+        </div>        
+    </div>
+
+}
+else{ ListCardShow = null; }
+
+
+@code {
+    //Коллекция колод
+    List<Model.Deck> ListDeck = new List<Model.Deck>();    
+    //таймер обновления списка колод
+    private System.Timers.Timer timer = new System.Timers.Timer(200);
+    public bool flagListShow = false;    
+    protected override async Task OnInitializedAsync()
+    {
+        timer.Elapsed += (sender, EventArgs) => LoadDecks();
+        timer.Start();
+        await base.OnInitializedAsync();
+        timer.Start();        
+        await base.OnInitializedAsync();
+    
+    }
+    //Выгрузка всех колод
+    async Task LoadDecks()
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            ListDeck = await dbContext.Decks.ToListAsync();
+        }
+        InvokeAsync(StateHasChanged);
+    }
+    //Удаление колоды
+    async Task DeleteDeck(int orderId)
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            var findeDeck = dbContext.Decks.FirstOrDefault(t => t.Id == orderId);
+            if (findeDeck != null)
+            {
+                dbContext.Decks.Remove(findeDeck);
+                await dbContext.SaveChangesAsync();
+                await LoadDecks();
+            }
+        }
+    }
+    int countPressButton = 1;//счетчик нажатия кнопки
+    //показ списка колод
+    async Task ShowListDecks()
+    {
+        await LoadDecks();
+
+        if(countPressButton%2!=0){ flagListShow = true; }else{ flagListShow = false; }
+        countPressButton++;        
+    }
+    public bool flagShowCardsActiv = true;
+    //получение состояния колоды  
+    int countPresButtonShow = 1;
+    //Получение статуса колоды
+    void GetStatusCards(int orderId,int param=0)
+    {
+
+        Model.Deck? _cardShow = new Model.Deck();
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            _cardShow =  dbContext.Decks.FirstOrDefault(t => t.Id == orderId);
+        }        
+        GetListCardfromJson(_cardShow);
+        if (param == 0)
+        {
+            if (countPresButtonShow % 2 != 0)
+            {
+                flagShowCardsActiv = true;
+            }
+            else { flagShowCardsActiv = false; }
+            countPresButtonShow++;            
+        }
+        if (param == 1)
+        {
+            Shuffle(ListCardShow);
+        }
+    }
+
+   //default колода
+    List<StorogeOfCards.Model.Card> ?ListCardShow = new List<Model.Card>();
+    //Коллекция перетасованных карт
+    List<StorogeOfCards.Model.Card>? ListRandomCardShow = new List<Model.Card>();
+    //Получение карт из выбранной колоды
+    public void GetListCardfromJson(Model.Deck? _cardShow)
+    {
+        if (_cardShow != null)
+        {
+            ListCardShow = JsonSerializer.Deserialize<List<StorogeOfCards.Model.Card>>(_cardShow.Status);
+        }  
+        else{ return; }
+    }
+
+    //перемешивание карт    
+    public void Shuffle(List<StorogeOfCards.Model.Card>? list)
+    {
+        Random rand = new Random();
+        for (int i = list.Count - 1; i >= 1; i--)
+        {
+            int j = rand.Next(i + 1);
+
+            var tmp = list[j];
+            list[j] = list[i];
+            list[i] = tmp;
+        }     
+        
+    }    
+    //Сохранение новго статуса колоды
+    async Task UpdateStaus(int orderId)
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            string StrJsonNewStatus = string.Empty;
+            var findeDeck = dbContext.Decks.FirstOrDefault(t => t.Id == orderId);
+            if (findeDeck != null)
+            {
+                findeDeck.Title = findeDeck.Title;
+                findeDeck.NumberOfCards = findeDeck.NumberOfCards;
+                findeDeck.Status = JsonSerializer.Serialize(ListCardShow);
+                dbContext.Decks.Update(findeDeck);
+                await dbContext.SaveChangesAsync();
+                await LoadDecks();
+            }
+        }
+    }
+
+
+
+   
+    
+
+
+
+}}

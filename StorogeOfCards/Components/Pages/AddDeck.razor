@@ -1,0 +1,191 @@
+﻿@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@rendermode InteractiveServer
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<img style="position:absolute; z-index:0;width:100vw;height:100vh;" src="https://4.downloader.disk.yandex.ru/preview/ed02f9e729c69170078e7cd342ecae4ce77eedd98247a1d59328b338690c12ef/inf/Aw-js9bBjWTH2xq-4xPqrCBR9G-M1-gikVD9bEOb-AcjZZ6KVk6cL1lWxwhLRQITPsReugj9B49DDhBNjKVE8g%3D%3D?uid=203472713&filename=pokerTable.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=203472713&tknv=v2&size=1393x792" />
+
+
+
+   
+   <div>
+    <button type="button" class="btn btn-outline-secondary stilebtnAdd" @onclick=modalAddOpen>
+        Добавить колоду       
+    </button> 
+</div>       
+@*Модальное окно добавления новой колоды*@
+@if (flagModalAdd)
+{
+    <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);z-index:100;"
+         aria-modal="true" role="dialog">
+        <div class="modal-dialog" style="width:270px;">
+            <div class="modal-content" style="min-height:200px;">
+                <div class="modal-header">
+                    <div class="text-center">
+                        <h4 class=" col-sm-12 modal-title text-center" >Добавление колоды </h4>
+                        <h1 id="h"></h1>
+                    </div>
+                    <div>
+                        <button @onclick=modalAddCloce style="border:none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form style="min-height:150px;min-width:280px;">
+                        <div class="mb-4 row ">
+                            <div class="col-sm-10">
+                                <p style="color:red">@MyError</p>
+                                <input type="text" class="form-control" id="TitleDeck" @bind=TitleDeck placeholder="Название колоды">
+                            </div>
+                        </div>
+                        <div class="mb-12 row d-flex">
+                            <label class="col-sm-10 col-form-label text-center ">Количесвто карт в колоде:</label>
+                            <div class="col-sm-5">
+                                @if (flagbutton1 == true)
+                                {
+                                    <button   type="button" class="btn btn-outline-success stilebtnNumberCard" @onclick=ClickBTN1>52</button>
+                                }
+                                else
+                                {
+                                    <button  type="button" class="btn btn-success stilebtnNumberCard" disabled>52</button>
+                                }
+                            </div>
+                            <div class="col-sm-5">
+
+                                @if (flagbutton2 == true)
+                                {
+                                    <button  type="button" class="btn btn-outline-success stilebtnNumberCard" @onclick=ClickBTN2>36</button>
+                                }
+                                else
+                                {
+                                    <button  type="button" class="btn btn-success stilebtnNumberCard" disabled>36</button>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary stilebtnNumberCard" @onclick="@(() => { ErrorInput(); AddNewDeck();})">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCards();
+
+    }
+    List<StorogeOfCards.Model.Card> ListCard = new List<Model.Card>();
+    Model.Card _card = new Model.Card();
+    async Task AddCard()
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            if (_card != null)
+            {
+                dbContext.Cards.Add(_card);
+                await dbContext.SaveChangesAsync();
+            }
+            StateHasChanged();
+
+        }
+    }
+    //модальное окно добавления колоды
+    public bool flagModalAdd = false;
+    public void modalAddOpen()
+    {
+        flagModalAdd = true;
+    }
+    public void modalAddCloce()
+    {
+        flagModalAdd = false;
+        MyError = "";
+    }
+    string TitleDeck = "";
+    string MyError = "";
+    public void ErrorInput()
+    {
+        if (TitleDeck == "")
+        {
+            MyError = "Введите навзвание колоды";
+            return;
+        }
+        modalAddCloce();
+    }
+    //кнопки выбора количесвто карт в модальном окне
+    public bool flagbutton1 = true;
+    public bool flagbutton2 = true;
+    int numberOfCards = 0;
+    public void ClickBTN1()
+    {
+        flagbutton1 = false;
+        flagbutton2 = true;
+        numberOfCards = 52;
+    }
+    public void ClickBTN2()
+    {
+        flagbutton2 = false;
+        flagbutton1 = true;
+        numberOfCards = 36;
+    }
+    List<Model.Deck> ListDeck = new List<Model.Deck>();
+    //Выгрузка всех колод
+    async Task LoadDecks()
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+
+            ListDeck = await dbContext.Decks.ToListAsync();
+        }
+    }
+    //добавление новой колоды в бд
+    async Task AddNewDeck()
+    {
+        var _deck = new Model.Deck() { Title = TitleDeck, NumberOfCards = numberOfCards,Status=await GetJsonStrCards(numberOfCards) };
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+            if (_deck != null)
+            {
+                await dbContext.Decks.AddAsync(_deck);
+                await dbContext.SaveChangesAsync();                
+            }        
+        }
+        TitleDeck = "";
+        numberOfCards = 0;
+       
+        await  InvokeAsync(StateHasChanged);
+    }
+    //Выгружает Коллекцию  все карты
+    async Task LoadCards()
+    {
+        var options = new DbContextOptionsBuilder<StorogeOfCards.ContextDB.ApplicationContext>().UseSqlite("Data Source=StorageCards.db").Options;
+        using (var dbContext = new StorogeOfCards.ContextDB.ApplicationContext(options))
+        {
+
+            ListCard = await dbContext.Cards.ToListAsync();
+        }
+    }
+    //Получение стартового статуса колоды(Json) в формате String 
+    async Task<string> GetJsonStrCards(int numberOfCards)
+    {
+        await LoadCards();
+        string StrJsonStatus = string.Empty;
+        switch (numberOfCards)
+        {
+            case 52: StrJsonStatus = JsonSerializer.Serialize(ListCard); break;
+            case 36: { ListCard.RemoveRange(0, 16); StrJsonStatus = JsonSerializer.Serialize(ListCard);}  break; 
+            default:break;              
+        }
+        return StrJsonStatus.ToString();
+    }
+
+}

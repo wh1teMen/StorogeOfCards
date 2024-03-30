@@ -1,0 +1,63 @@
+﻿
+@media screen and (max-width:1500px) {
+    .listDeck {     
+        width:100px;
+        height:100px
+    }
+}
+@media screen and (max-width:1077px) {
+    .listDeck {
+         display: none;
+       
+    }
+}
+
+.btnShow {
+    position: relative;
+    top: 10px;
+    margin-left: 15px 10px;
+    color: white;
+    font-family: 'Comic Sans MS';
+    font-weight: bold;
+    border: 2px solid white;
+    font-size: 23px;
+}
+.listDeck {
+    position: fixed;
+    top: 10px;
+    left: 15px
+}
+.stileth,h3 {
+    color: white;
+    font-family: 'Comic Sans MS';
+    font-weight: bold;
+}
+.stileTd {
+    color: white;
+    font-family: 'Comic Sans MS';
+    font-weight: bold;
+}
+.btnstile{
+    width:45px;
+}
+.conteinerCard {
+    width: 50%;
+    min-height: 120px;
+    display: flex;
+    flex-wrap: wrap;
+    position:fixed;
+    left: 25%;
+    top: 150px;
+    transition:all 0.2s;
+}
+.divShowCards {
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box
+}
+    .divShowCards img {
+        height: 100px;
+        margin: 13px;
+    }
