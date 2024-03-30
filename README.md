@@ -1,57 +1,33 @@
 # StorogeOfCards
-# Текстовый процессор :page_with_curl:
-*(Реализующий автодополнение слов по требованию пользователя)*
+# ХРАНИЛИЩЕ КАРТОЧНЫХ КОЛОД:page_with_curl:
 
 
-
-#### Скачать проект: [Проект.zip](https://disk.yandex.ru/d/a3pSASiWwwLbsA)
+#### Скачать проект: [Проект.zip](https://disk.yandex.ru/d/TVqPwNMnJF8FDA)
 ____
 
-### Функции процессора:
-+ Загрузка и анализ (входящего) текстового файла для формирования словаря «часто встречающихся слов».
-+ Сопровождение словаря с помощью кнопок в верхнем меню программы.
-+ Вывод подсказок (автодополнений) к словам в соответствии со сформированным словарём.
+### Функции:
++ 	создание именованной карточной колоды.
++ 	перетасовка указанной карточной колоды.
++ 	удаление указанной карточной колоды.
++  получение карточной колоды по её имени в её текущем состоянии (упорядочен-ном или перетасованном).
 ___
  ####  Используемые технологии: 
 :heavy_check_mark: ***Visual Studio 2022*** </br>
-:heavy_check_mark:   ***Windows Forms***</br>
+:heavy_check_mark:   ***Blazor***</br>
+:heavy_check_mark:   ***HTML***</br>
+:heavy_check_mark:   ***CSS***</br>
+:heavy_check_mark:   ***Bootstrap***</br>
 :heavy_check_mark:   ***ООП***</br>
-:heavy_check_mark:  ***ADO.net***</br>
+:heavy_check_mark:  ***entity framework***</br>
 :heavy_check_mark:   ***SQLite***</br>
 :heavy_check_mark:   ***LINQ***
-
 </br>
 
- ##  1.Создание словаря :hammer:
+ ##  Демонстрация работы
 
- #### Условия создания словаря:
-   * Поле ввода не должно быть пустым
- #### Результат:
-  * Формирование нового словаря по входящему файлу  
-
-<img src="ReadmeContent/Create.gif" Alt="Create">
+<img src="[ReadmeContent/Create.gif](https://1.downloader.disk.yandex.ru/preview/2b9c4692874a2017f351f50be10d70fc8ba87116c60225ca3ca42304cfc4bc52/inf/--qWsOwQ4dqNji-DOtoK2Gahn6D8CXhkon39FZ-0oYgYLHL8oRWQFuDM-XEbgVj-EvKwRUjmRloYqBbED2xA-A%3D%3D?uid=203472713&filename=storage.gif&disposition=inline&hash=&limit=0&content_type=image%2Fgif&owner_uid=203472713&tknv=v2&size=1141x718)" Alt="Create">
 
 </br>
-
-## <span style="font-size:22px;font-weight:bold;">2. Обновление словаря</span> :recycle:
-
-#### Условия добавления в словарь:
-  * Минимальное число символов, воспринимаемых приложением как слово – 3.
-  * Минимальное число повторений слова в тексте для включения этого слова - 3. 
-#### Результат:
-   * Дополнение существующего словаря по входящему файлу.
- 
-
-<img src="ReadmeContent/Refresh.gif" Alt="Refresh">
-
-</br>
-
-## <span style="font-size:22px;font-weight:bold;">3. Очистка  словаря</span> :x:
- 
- #### Результат:
-   * Удаление всех данных словаря.
-<img src="ReadmeContent/Delete.gif" Alt="Delete">
-
 
 -----
 <span style="color: #545463; height:30px; font-size:25px; font-family:COMIC SANS MS,Arial;font-weight:bold;">Выполнил: Белов Александр Сергеевич</span>
