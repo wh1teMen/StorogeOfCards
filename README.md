@@ -13,12 +13,13 @@ ____
 ___
  ####  Используемые технологии: 
 :heavy_check_mark: ***Visual Studio 2022*** </br>
+:heavy_check_mark: ***C#*** </br>
 :heavy_check_mark:   ***Blazor***</br>
 :heavy_check_mark:   ***HTML***</br>
 :heavy_check_mark:   ***CSS***</br>
 :heavy_check_mark:   ***Bootstrap***</br>
 :heavy_check_mark:   ***ООП***</br>
-:heavy_check_mark:  ***entity framework***</br>
+:heavy_check_mark:  ***Entity framework***</br>
 :heavy_check_mark:   ***SQLite***</br>
 :heavy_check_mark:   ***LINQ***
 </br>
